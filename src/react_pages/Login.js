@@ -25,8 +25,11 @@ export default class Login extends React.Component {
                                     <input type="password" className="form-control" required/>
                                 </div>
                                 <div className="row">
-                                    <div style={{textAlign: 'center'}}>
+                                    <div className="col-md-6" style={{textAlign: 'left'}}>
                                         <button className="btn btn-primary">Login</button>
+                                    </div>
+                                    <div className="col-md-6" style={{textAlign: 'right'}}>
+                                        <a className="btn btn-primary" href="/registration">Sign Up</a>
                                     </div>
                                 </div>
 
