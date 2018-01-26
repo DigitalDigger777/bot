@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import axios from 'axios';
 import Config from '../Config';
 
 export default class Login extends React.Component {
@@ -15,41 +16,12 @@ export default class Login extends React.Component {
         this.state = {
             email: null,
             password: null,
+            token: window.localStorage.getItem('bot_admin_token'),
             baseUrl: config.baseUrl
         };
 
         this.changeEmail = this.changeEmail.bind(this);
         this.changePassword = this.changePassword.bind(this);
-    }
-
-    componentDidMount() {
-        const token = this.state.token;
-
-        if (token) {
-            axios.post(this.state.baseUrl + 'shopper-admin/rest/login', {
-                token: token
-            })
-                .then(response => {
-                    console.log(response);
-
-                    window.localStorage.setItem('shopper_token', response.data.token);
-                    window.localStorage.setItem('shopper', JSON.stringify({
-                        id: response.data.id,
-                        name: response.data.name,
-                        logo: response.data.image
-                    }));
-                    window.location = '/admin/profile';
-                })
-                .catch(error => {
-                    console.log(error);
-                    this.setState({
-                        alert: {
-                            open: true,
-                            message: <span id="message-id">Login or password incorrect</span>
-                        }
-                    });
-                });
-        }
     }
 
     changeEmail(e) {
@@ -76,7 +48,7 @@ export default class Login extends React.Component {
             password: this.state.password
         })
             .then(response => {
-                console.log(response);
+                //console.log(response);
 
                 window.localStorage.setItem('bot_admin_token', response.data.token);
                 window.localStorage.setItem('bot_admin', JSON.stringify({
@@ -118,7 +90,7 @@ export default class Login extends React.Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6" style={{textAlign: 'left'}}>
-                                        <button className="btn btn-primary" onClick={this.login.bind(this)}>Login</button>
+                                        <button className="btn btn-primary" onClick={this.login.bind(this)} type="button">Login</button>
                                     </div>
                                     <div className="col-md-6" style={{textAlign: 'right'}}>
                                         <a className="btn btn-primary" href="/registration">Sign Up</a>

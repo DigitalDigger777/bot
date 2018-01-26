@@ -17,6 +17,17 @@ export default class FollowersList extends React.Component {
 
                 <PageContainer>
                     <div className="panel panel-transparent">
+                        <div className="pgn-wrapper" data-position="top">
+                            <div className="pgn push-on-sidebar-open pgn-bar">
+                                <div className="alert alert-info">
+                                    <button type="button" className="close" data-dismiss="alert">
+                                        <span aria-hidden="true">×</span>
+                                        <span className="sr-only">Close</span>
+                                    </button>
+                                    <span>This notification looks so perfect!</span>
+                                </div>
+                            </div>
+                        </div>
                         <div className="panel-heading">
                             <div className="panel-title">Followers List</div>
                         </div>

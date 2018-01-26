@@ -3,11 +3,44 @@
  */
 
 import React from 'react';
+import axios from 'axios';
+
 import Header from '../react_components/Header';
 import SideBar from '../react_components/SideBar';
 import PageContainer from '../react_components/PageContainer';
+import Config from '../Config';
 
 export default class TrackUrlList extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        const config = new Config();
+
+        this.state = {
+            items: [],
+            token: window.localStorage.getItem('bot_admin_token'),
+            baseUrl: config.baseUrl
+        };
+    }
+
+    componentWillMount() {
+        axios.get(this.state.baseUrl + 'fb/bot-track-url/0', {
+            params: {
+                method: 'LIST',
+                token: this.state.token
+            }
+        })
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    items: response.data
+                });
+            })
+            .catch(error => {
+
+            });
+    }
 
     render() {
         return(
@@ -21,6 +54,11 @@ export default class TrackUrlList extends React.Component {
                             <div className="panel-title">Track URLs list</div>
                         </div>
                         <div className="panel-body">
+                            <div className="panel">
+                                <div className="panel-body">
+                                    <a className="btn btn-primary" href="/add-track-url">Add Url</a>
+                                </div>
+                            </div>
                             <div className="table-responsive">
                                 <table className="table table-hover" id="basicTable">
                                     <thead>
@@ -31,62 +69,23 @@ export default class TrackUrlList extends React.Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td className="v-align-middle">
-                                            <a href="">drizzle.jjpanda.com</a>
-                                        </td>
-                                        <td>
-                                            <div className="checkbox check-success">
-                                                <input type="checkbox" value="3" id="checkbox1"/>
-                                                <label for="checkbox1"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <button className="btn"><i className="pg-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="">jjpanda.com</a>
-                                        </td>
-                                        <td>
-                                            <div className="checkbox check-success">
-                                                <input type="checkbox" value="3" id="checkbox2"/>
-                                                <label for="checkbox2"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <button className="btn"><i className="pg-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="">fenglinfl.com</a>
-                                        </td>
-                                        <td>
-                                            <div className="checkbox check-success">
-                                                <input type="checkbox" value="3" id="checkbox3" checked="checked"/>
-                                                <label for="checkbox3"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <button className="btn"><i className="pg-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="">jerryjiang.ca</a>
-                                        </td>
-                                        <td>
-                                            <div className="checkbox check-success">
-                                                <input type="checkbox" value="3" id="checkbox4"/>
-                                                <label for="checkbox4"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <button className="btn"><i className="pg-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                    {this.state.items.map((item, key) => {
+                                        return <tr key={key}>
+                                                    <td className="v-align-middle">
+                                                        <a href={item.url}>{item.url}</a>
+                                                    </td>
+                                                    <td>
+                                                        <div className="checkbox check-success">
+                                                            <input type="checkbox" value="3" id="checkbox1" checked={item.isIgnore ? 'checked' :''}/>
+                                                            <label for="checkbox1"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button className="btn"><i className="pg-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                    })}
+
                                     </tbody>
                                 </table>
                             </div>
